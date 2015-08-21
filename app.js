@@ -16,9 +16,15 @@ var movieRouter = express.Router();
 
 movieRouter.route('/Movies')
   .get(function(req, res) {
-    var responseJson = { greeting: "Movies galore!" };
-
-    res.json(responseJson);
+    
+    
+    Movie.find(function(err, movies) {
+      if (err) {
+        res.status(500).send(err); // display 500 error page with the error
+      } else {
+        res.json(movies);
+      }
+    });
   });
 
 // path will be /api/Movies
