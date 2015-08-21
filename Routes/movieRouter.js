@@ -1,11 +1,12 @@
 var express = require('express');
 
-var routes = function() {
+// pass in Movie obj for the param
+var routes = function(Movie) {
 
   // Route handler
   var movieRouter = express.Router();
 
-  movieRouter.route('/Movies')
+  movieRouter.route('/')
     .post(function(req, res) {
       var movie = new Movie(req.body);  // pass in post data that's been sent to us
 
@@ -33,7 +34,7 @@ var routes = function() {
       });
     });
 
-  movieRouter.route('/Movies/:movieId')
+  movieRouter.route('/:movieId')
     .get(function(req, res) {
       Movie.findById(req.params.bookId, function(err, book) {
         if (err) {
