@@ -17,7 +17,7 @@ var movieRouter = express.Router();
 movieRouter.route('/Movies')
   .get(function(req, res) {
     // var query = req.query;  // this method allows anything to query the db
-    var query = {};
+    var query = {}; // more secure
 
     if (req.query.genre) {
       query.genre = req.query.genre;
@@ -29,6 +29,17 @@ movieRouter.route('/Movies')
         res.status(500).send(err); // display 500 error page with the error
       } else {
         res.json(movies);
+      }
+    });
+  });
+
+movieRouter.route('/Movies/:movieId')
+  .get(function(req, res) {
+    Movie.findById(req.params.bookId, function(err, book) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(book);
       }
     });
   });
