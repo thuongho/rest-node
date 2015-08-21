@@ -1,4 +1,11 @@
-var express = require('express');
+var express = require('express'),
+  mongoose = require('mongoose');  // mongoose converts mongodb to json format
+
+// opens a connection to the db and if movieAPI doesn't exist, it will create it
+var db = mongoose.connect('mongodb://localhost/movieAPI');
+
+// Movie db
+var Movie = require('./models/movieModel');
 
 var app = express();
 
