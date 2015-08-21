@@ -16,9 +16,15 @@ var movieRouter = express.Router();
 
 movieRouter.route('/Movies')
   .get(function(req, res) {
-    
-    
-    Movie.find(function(err, movies) {
+    // var query = req.query;  // this method allows anything to query the db
+    var query = {};
+
+    if (req.query.genre) {
+      query.genre = req.query.genre;
+    } 
+
+    // add query as a param to the find
+    Movie.find(query, function(err, movies) {
       if (err) {
         res.status(500).send(err); // display 500 error page with the error
       } else {
