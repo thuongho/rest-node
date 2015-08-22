@@ -55,13 +55,13 @@ var routes = function(Movie) {
   movieRouter.route('/:movieId')
     .get(function(req, res) {
       res.json(req.movie);
-    })
+    }) // end of get
     .put(function(req, res) {
       req.movie.title = req.body.title;
       req.movie.director = req.body.director;
       req.movie.genre = req.body.genre;
       req.movie.watch = req.body.watch;
-      
+
       // asynchronous save
       req.movie.save(function(err) {
         if (err) {
@@ -70,7 +70,7 @@ var routes = function(Movie) {
           res.json(req.movie);
         }
       });
-    })
+    }) // end of put
     .patch(function(req, res) {
       if (req.body._id) {
         delete req.body._id;
@@ -87,7 +87,17 @@ var routes = function(Movie) {
           res.json(req.movie);
         }
       });
-    });
+    }) // end of patch
+    .delete(function(req, res) {
+      req.movie.remove(function(err) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.status(204).send('Movie removed.'); // movie was deleted, send back msg
+        }
+      });
+    }); // end of delete
+
   // make the function return the movieRouter
   return movieRouter;
 };
