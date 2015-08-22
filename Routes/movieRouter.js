@@ -36,7 +36,7 @@ var routes = function(Movie) {
 
   // middleware
   // next go from one middleware to the next (get, put, patch)
-  movieRouter.use('/:movieId', function(req, res, next) {  /
+  movieRouter.use('/:movieId', function(req, res, next) {
     Movie.findById(req.params.movieId, function(err, movie) {
       if (err) {
         res.status(500).send(err);
@@ -61,8 +61,32 @@ var routes = function(Movie) {
       req.movie.director = req.body.director;
       req.movie.genre = req.body.genre;
       req.movie.watch = req.body.watch;
-      req.movie.save();
-      res.json(req.movie);
+      
+      // asynchronous save
+      req.movie.save(function(err) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.json(req.movie);
+        }
+      });
+    })
+    .patch(function(req, res) {
+      if (req.body._id) {
+        delete req.body._id;
+      }
+
+      for (var key in req.body) {
+        req.movie[key] = req.body[key];
+      }
+
+      req.movie.save(function(err) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.json(req.movie);
+        }
+      });
     });
   // make the function return the movieRouter
   return movieRouter;
