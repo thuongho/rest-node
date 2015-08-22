@@ -34,29 +34,35 @@ var routes = function(Movie) {
       });
     });
 
+  // middleware
+  // next go from one middleware to the next (get, put, patch)
+  movieRouter.use('/:movieId', function(req, res, next) {  /
+    Movie.findById(req.params.movieId, function(err, movie) {
+      if (err) {
+        res.status(500).send(err);
+      } else if (movie) {
+        
+        // if movie exists
+        req.movie = movie;
+        next();
+
+      } else {
+        res.status(404).send('No movie found.');
+      }
+    });
+  });
+
   movieRouter.route('/:movieId')
     .get(function(req, res) {
-      Movie.findById(req.params.movieId, function(err, movie) {
-        if (err) {
-          res.status(500).send(err);
-        } else {
-          res.json(movie);
-        }
-      });
+      res.json(req.movie);
     })
     .put(function(req, res) {
-      Movie.findById(req.params.movieId, function(err, movie) {
-        if (err) {
-          res.status(500).send(err);
-        } else {
-          movie.title = req.body.title;
-          movie.director = req.body.director;
-          movie.genre = req.body.genre;
-          movie.watch = req.body.watch;
-          movie.save();
-          res.json(movie);
-        }
-      });
+      req.movie.title = req.body.title;
+      req.movie.director = req.body.director;
+      req.movie.genre = req.body.genre;
+      req.movie.watch = req.body.watch;
+      req.movie.save();
+      res.json(req.movie);
     });
   // make the function return the movieRouter
   return movieRouter;
