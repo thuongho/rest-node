@@ -36,11 +36,25 @@ var routes = function(Movie) {
 
   movieRouter.route('/:movieId')
     .get(function(req, res) {
-      Movie.findById(req.params.bookId, function(err, book) {
+      Movie.findById(req.params.movieId, function(err, movie) {
         if (err) {
           res.status(500).send(err);
         } else {
-          res.json(book);
+          res.json(movie);
+        }
+      });
+    })
+    .put(function(req, res) {
+      Movie.findById(req.params.movieId, function(err, movie) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          movie.title = req.body.title;
+          movie.director = req.body.director;
+          movie.genre = req.body.genre;
+          movie.watch = req.body.watch;
+          movie.save();
+          res.json(movie);
         }
       });
     });
