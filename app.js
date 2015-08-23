@@ -17,11 +17,11 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json()); // look at body for json obj and add to req.body
 
-// execute the function to return back the movieRouter
-movieRouter = require('./Routes/movieRouter')(Movie);  // inject Movie model to use in the router
+// execute the function to return back the movieRoutes
+movieRoutes = require('./Routes/movieRoutes')(Movie);  // inject Movie model to use in the router
 
 // Route paths
-app.use('/api/movies', movieRouter);  // path will be localhost:8000/api/movies
+app.use('/api/movies', movieRoutes);  // path will be localhost:8000/api/movies
 // app.use('/api/directors', directorRouter);
 
 // handler
