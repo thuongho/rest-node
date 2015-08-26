@@ -1,6 +1,7 @@
 // gulp will look for a file called gulpfile.js
 var gulp = require('gulp'),
-  nodemon = require('gulp-nodemon');
+  nodemon = require('gulp-nodemon'),
+  gulpMocha = require('gulp-mocha');
 
 // default is the name of the task
 gulp.task('default', function() {
@@ -20,3 +21,9 @@ gulp.task('default', function() {
 });
 
 // launch the web server with 'gulp' in terminal
+
+gulp.task('test', function() {
+  gulp.src('Tests/*.js', {read: false})
+    .pipe(gulpMocha({reporter: 'nyan'}))
+});
+// launch with 'gulp test'

@@ -3,11 +3,19 @@ var movieController = function(Movie) {
   var post = function(req, res) {
     var movie = new Movie(req.body);  // pass in post data that's been sent to us
 
-    // console.log(movie);
-    movie.save();  // create new movie in MongoDB
-    // 201 status is created
-    res.status(201).send(movie);  // make id avail to client
+    if (!req.body.title) {
+      res.status(400);
+      res.send('Title is required');
+    } else {
+      // console.log(movie);
+      movie.save();  // create new movie in MongoDB
+      // 201 status is created
+      // res.status(201).send(movie);  // make id avail to client
 
+      // unchain for gulp tests
+      res.status(201);
+      res.send(movie);
+    }
   };
 
   var get = function(req, res) {
