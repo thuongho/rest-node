@@ -31,7 +31,19 @@ var movieController = function(Movie) {
       if (err) {
         res.status(500).send(err); // display 500 error page with the error
       } else {
-        res.json(movies);
+        // HATEOS
+        var returnMovie = [];
+        movies.forEach(function(element, index, array) {
+          // instead of adding links to Mongoose model, create a new obj with links
+          var newMovie = element.toJSON();
+          
+          // linkable id
+          newMovie.links = {};
+          newMovie.links.self = 'http://' + req.headers.host + '/api/movies/' + newMovie._id;
+          returnMovie.push(newMovie);
+        });
+        // res.json(movies);
+        res.json(returnMovie);
       }
     });
   };
