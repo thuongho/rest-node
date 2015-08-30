@@ -31,7 +31,15 @@ var routes = function(Movie) {
 
   movieRoutes.route('/:movieId')
     .get(function(req, res) {
-      res.json(req.movie);
+      // filter by genre
+      var returnMovie = req.movie.toJSON();
+
+      returnMovie.links = {};
+      var newLink = 'http://' + req.headers.host + '/api/movies/?genre=' + returnMovie.genre;
+      // replace genre names with space with %20 in links
+      returnMovie.links.FilterByThisGenre = newLink.replace(' ', '%20');
+      // res.json(req.movie);
+      res.json(returnMovie);
     }) // end of get
     .put(function(req, res) {
       req.movie.title = req.body.title;
